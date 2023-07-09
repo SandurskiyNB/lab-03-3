@@ -1,7 +1,6 @@
 ﻿#include<iostream>
-#include<vector>
 #include<string>
-using namespace std;
+#include "histogram.h"
 const double FREAK_LIMIT = 70;
 const int MAX_MINUS_COUNT = 78;
 const int SYMB_COUNT = 5;
@@ -14,18 +13,6 @@ vector<double> input_numbers(int numbers_count) {
 		cin >> numbers[i];
 	}
 	return numbers;
-}
-
-// Функция поиска минимума и максимума среди чисел
-void find_minmax(const vector<double> &numbers, const int numbers_count, double& min, double& max) {
-	min = numbers[0];
-	max = numbers[0];
-	for (int i = 1; i < numbers_count; i++)
-		if (numbers[i] < min)
-			min = numbers[i];
-		else
-			if (numbers[i] > max)
-				max = numbers[i];
 }
 
 // Функция вычисления частот корзин
