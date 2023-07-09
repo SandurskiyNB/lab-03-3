@@ -1,7 +1,6 @@
 #include "histogram.h"
 #include <cassert>
-void
-test__find_minmax() {
+void test__find_minmax() {
 
 	double min = 0;
 	double max = 0;
@@ -33,7 +32,15 @@ test__find_minmax() {
 	assert(min == 0);
 	assert(max == 0);
 }
-int
-main() {
+
+void test__svg_frame() {
+	int rightX;
+	int downY;
+	svg_frame(false, 50, 30, 10, 5, 15, 3, rightX, downY);
+	assert(rightX == 115);
+	assert(downY == 125);
+}
+int main() {
 	test__find_minmax();
+	test__svg_frame();
 }

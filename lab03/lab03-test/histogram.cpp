@@ -40,6 +40,20 @@ void svg_rect(double x, double y, double width, double height, string stroke, st
 	cout << "fill='" << fill << "'/>\n";
 }
 
+void svg_frame(bool scaling, int block_width, int block_height, int block_len, int max_freak, int offset_frame, int section_count, int& rightX, int& downY, string stroke) {
+	rightX;
+	if (scaling)
+		rightX = 365;
+	else
+		rightX = block_width + max_freak * block_len + offset_frame;
+	downY = 5 + offset_frame + block_height * section_count + offset_frame;
+
+	cout << "<line x1='5' y1='5' x2 ='" << rightX << "' y2='5' stroke='red' stroke-width='1' stroke-dasharray='5 5'/>";
+	cout << "<line x1='" << rightX << "' y1='5' x2 ='" << rightX << "' y2='" << downY << "' stroke='" << stroke << "' stroke-width='1' stroke-dasharray='5 5'/>";
+	cout << "<line x1='" << rightX << "' y1='" << downY << "' x2 ='5' y2='" << downY << "' stroke='" << stroke << "' stroke-width='1' stroke-dasharray='5 5'/>";
+	cout << "<line x1='5' y1='" << downY << "' x2 ='5' y2='5' stroke='red' stroke-width='1' stroke-dasharray='5 5'/>";
+}
+
 void show_histogram_svg(const vector<int>& freak_sections, const int section_count) {
 
 	const int IMAGE_WIDTH = 400;
@@ -50,6 +64,7 @@ void show_histogram_svg(const vector<int>& freak_sections, const int section_cou
 	const int BLOCK_HEIGHT = 30;
 	const int BLOCK_LEN = 10;
 	const double FREAK_LIMIT = 30;
+	const int OFFSET_FRAME = 15;
 
 	// Поиск максимальной частоты среди частот всех корзин
 	int max_freak = freak_sections[0];
@@ -64,7 +79,7 @@ void show_histogram_svg(const vector<int>& freak_sections, const int section_cou
 	else
 		scaling = false;
 
-	double shift = 0;
+	double shift = 20;
 	svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
 	for (int i = 0; i < section_count; i++) {
 		double section_width;
@@ -76,5 +91,6 @@ void show_histogram_svg(const vector<int>& freak_sections, const int section_cou
 		svg_rect(BLOCK_WIDTH, shift, section_width, BLOCK_HEIGHT, "blue", "green");
 		shift += BLOCK_HEIGHT;
 	}
+	//svg_frame(scaling, BLOCK_WIDTH, BLOCK_HEIGHT, BLOCK_LEN, max_freak, OFFSET_FRAME, section_count);
 	svg_end();
 }
