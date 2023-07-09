@@ -1,6 +1,6 @@
 ﻿#include<iostream>
 #include<vector>
-//#include<algorithm>
+#include<string>
 using namespace std;
 const double FREAK_LIMIT = 70;
 const int MAX_MINUS_COUNT = 78;
@@ -127,25 +127,74 @@ void show_histogram_text(vector<int> freak_sections, const int sections_count) {
 	cout << "+\n";
 }
 
+void svg_begin(double width, double height) {
+	cout << "<?xml version='1.0' encoding='UTF-8'?>\n";
+	cout << "<svg ";
+	cout << "width='" << width << "' ";
+	cout << "height='" << height << "' ";
+	cout << "viewBox='0 0 " << width << " " << height << "' ";
+	cout << "xmlns='http://www.w3.org/2000/svg'>\n";
+}
+
+void svg_end() {
+	cout << "</svg>\n";
+}
+
+void svg_text(double left, double baseline, string text) {
+	cout << "<text x='" << left << "' ";
+	cout << "y='" << baseline << "'";
+	cout << ">" << text << "</text>\n";
+}
+
+void svg_rect(double x, double y, double width, double height, string stroke = "blue", string fill = "green") {
+	cout << "<rect ";
+	cout << "x='" << x << "' ";
+	cout << "y='" << y << "' ";
+	cout << "width='" << width << "' ";
+	cout << "height='" << height << "' ";
+	cout << "stroke='" << stroke << "' ";
+	cout << "fill='" << fill << "'/>\n";
+}
+
+void show_histogram_svg(const vector<int>& freak_sections, const int section_count) {
+	const int IMAGE_WIDTH = 400;
+	const int IMAGE_HEIGHT = 300;
+	const int TEXT_LEFT = 20;
+	const int TEXT_BASELINE = 20;
+	const int BLOCK_WIDTH = 50;
+	const int BLOCK_HEIGHT = 30;
+	const int BLOCK_LEN = 10;
+
+	svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
+	double shift = 0;
+	for (int i = 0; i < section_count; i++) {
+		double section_width = BLOCK_LEN * freak_sections[i];
+		svg_text(TEXT_LEFT, TEXT_BASELINE + shift, to_string(freak_sections[i]));
+		svg_rect(BLOCK_WIDTH, shift, section_width, BLOCK_HEIGHT);
+		shift += BLOCK_HEIGHT;
+	}
+	svg_end();
+}
+
 int main() {
 
 	setlocale(LC_ALL, "Russian");
 
 	// Ввод количества чисел
 	int numbers_count;
-	cout << "Введите кол-во чисел: ";
+	//cout << "Введите кол-во чисел: ";
 	cin >> numbers_count;
 
 	// Заполнение массива числами
-	cout << "Введите числа:\n";
+	//cout << "Введите числа:\n";
 	const auto numbers = input_numbers(numbers_count);
 
 	// Ввод количества корзин и создание массива частот на каждом интервале
 	double sections_count;
-	cout << "Введите ко-во корзин: ";
+	//cout << "Введите ко-во корзин: ";
 	cin >> sections_count;
 
 	vector<int> freak_sections = make_histogram(numbers, numbers_count, sections_count);
 
-	show_histogram_text(freak_sections, sections_count);
+	show_histogram_svg(freak_sections, sections_count);
 }
